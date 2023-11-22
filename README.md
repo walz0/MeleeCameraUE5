@@ -63,7 +63,7 @@ The offset at which the camera will begin to rotate horizontally / vertically
 FVector2D cam_offset;
 ```
 
-# CamSubject
+## CamSubject
 
 ### Direction
 Current direction the subject is facing, `-1.0` or `1.0`
@@ -91,7 +91,7 @@ Vertical offset of the bounding box from the focus.
 float y_offset;
 ```
 
-# MainCamera
+## MainCamera
 ### Interest
 The point that the camera is currently looking at. The interest is constantly trying to find the most optimal spot to look in order to frame the subjects properly and avoid wasting space on screen.
 ```
@@ -113,6 +113,7 @@ The target position of the camera.
 FVector target_position;
 ```
 ### Fixedness Multipliers
+Fixedness values for increasing numbers of players, value is set to `1.0` if the total players is greater than 4
 ```
 TArray<float> subjectFixednessMultipliers = TArray<float>{
     1.5f,
