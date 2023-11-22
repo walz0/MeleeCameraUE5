@@ -1,11 +1,13 @@
 # MeleeCameraUE5
+This project aims to recreate the look and feel of Melee's camera through the use of decompiled source code from the game. The original purpose of this project was only to decompile Melee's camera code, but in the process it became a learning experience for development in Unreal Engine.
+
+---
 
 ![Showcase](/showcase.gif "Showcase")
 
-# Description
-This project aims to recreate the look and feel of Melee's camera through the use of decompiled source code from the game. The original purpose of this project was only to decompile Melee's camera code, but in the process it became a learning experience for development in Unreal Engine.
-
 ![Bounds](/bounds.gif "Bounds")
+
+---
 
 # Stage
 
