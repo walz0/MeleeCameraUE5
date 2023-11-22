@@ -404,31 +404,30 @@ void AMainCamera::UpdateBounds() {
         y_max = (cameraOffset.X + 40.0f * 10.0f);
     }
 
-	float z_pos = position.X;
-	float z_clamp;
-	if (z_pos < 0.0f) {
-		z_pos = -z_pos;
+    // Get current depth position of camera
+	float zPos = position.X;
+
+    // Set zoom parameters
+    float maxAdditionalZoom = 490.0f;
+	float zoomScale;
+
+	if (zPos < 0.0f) {
+		zPos = -zPos;
 	}
-	if (z_pos >= 80.0f * 10.0f) {
-		if (z_pos <= 5000.0f * 10.0f) {
-			z_clamp = (z_pos - 80.0f * 10.0f) / (1920.0f * 10.0f);
+	if (zPos >= 0) {
+		if (zPos <= stage->GetCamDistMax()) {
+			zoomScale = zPos / stage->GetCamDistMax();
 		}
 		else {
-			z_clamp = 1.0f;
+			zoomScale = 1.0f;
 		}
 	}
 	else {
-		z_clamp = 0.0f;
+		zoomScale = 0.0f;
 	}
-    z_clamp = 0.5f;
 
-	// UE_LOG(LogTemp, Warning, TEXT("z_pos %f"), z_pos);
-	// UE_LOG(LogTemp, Warning, TEXT("z_clamp %f"), z_clamp);
-
-    // TODO :: z_pos code
     bounds->x_min = x_min;
-    //bounds->y_min = y_min - (z_clamp * 390.0f + 10.0f);
-    bounds->y_min = y_min;
+    bounds->y_min = y_min - (zoomScale * maxAdditionalZoom + 10.0f);
     bounds->x_max = x_max;
     bounds->y_max = y_max;
 }
@@ -447,7 +446,7 @@ void AMainCamera::UpdateTarget() {
         boundSize = boundsWidth;
     }
 
-    float upperThreshold = 1200.0f;
+    float upperThreshold = 1000.0f;
     float lowerThreshold = 600.0f;
 
 
@@ -464,12 +463,12 @@ void AMainCamera::UpdateTarget() {
     float heightMultiplier = ((bounds->y_min - cameraOffset.Y) + (bounds->y_max - cameraOffset.Y)) * (0.5f - scale) + cameraOffset.Y;
     float stageVerticalRot = stage->GetVerticalRotation();
 
-	float verticalRotScaled = -FMath::DegreesToRadians((heightMultiplier + -30.0f * 10.0f) * stageVerticalRot);
+	float verticalRotScaled = -FMath::DegreesToRadians((heightMultiplier + -10.0f * 10.0f) * stageVerticalRot);
     if (verticalRotScaled > (FMath::DegreesToRadians(5.0f))) {
         verticalRotScaled = FMath::DegreesToRadians(5.0f);
     }
-    if (verticalRotScaled < (FMath::DegreesToRadians(-7.0f))) {
-        verticalRotScaled = FMath::DegreesToRadians(-7.0f);
+    if (verticalRotScaled < (FMath::DegreesToRadians(-8.0f))) {
+        verticalRotScaled = FMath::DegreesToRadians(-8.0f);
     }
 
     float stageTilt = FMath::DegreesToRadians(stage->GetTilt());
