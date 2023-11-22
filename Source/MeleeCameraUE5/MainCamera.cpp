@@ -407,6 +407,10 @@ void AMainCamera::UpdateBounds() {
 
     bounds->x_min = x_min;
     bounds->y_min = y_min - (zoomScale * maxAdditionalZoom + 10.0f);
+    // Clamp bottom bound at the camera limit
+	if (bounds->y_min < stage->GetCameraLimitBottom()) {
+        bounds->y_min = stage->GetCameraLimitBottom();
+    }
     bounds->x_max = x_max;
     bounds->y_max = y_max;
 }
@@ -429,15 +433,11 @@ void AMainCamera::UpdateTarget() {
     float lowerThreshold = 600.0f;
 
 
-	UE_LOG(LogTemp, Warning, TEXT("boundSize, %f"), boundSize);
-
     float scale = 0.0682f;
     if (boundSize <= upperThreshold && boundSize >= lowerThreshold) {
         scale = 0.0682f * ((boundSize - lowerThreshold) / (upperThreshold - lowerThreshold));
     }
 
-
-	UE_LOG(LogTemp, Error, TEXT("scale, %f"), scale);
 
     float heightMultiplier = ((bounds->y_min - cameraOffset.Y) + (bounds->y_max - cameraOffset.Y)) * (0.5f - scale) + cameraOffset.Y;
     float stageVerticalRot = stage->GetVerticalRotation();
@@ -544,8 +544,6 @@ void AMainCamera::LerpInterest(float smoothness) {
 			boundSize = boundsWidth;
 		}
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("boundSize %f"), boundSize);
 
     float scale;
 	if (boundSize <= 900.0f * 10.0f) {
