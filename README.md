@@ -15,7 +15,7 @@ The camera behavior is driven by three main factors: subjects, bounds, and inter
 The camera's bounds are completely governed by the position and size of the subjects' bounding boxes. While the purpose of the bounds is to contain the subjects, the bounds may stretch and shrink depending on the direction the subjects are facing, the vertical position of the subjects, and the fixedness value of the stage. For instance, the the bottom bound may expand dramatically when there is a subject toward the upper or lower camera limit, this is to ensure that the stage is still visible for the players below them.
 
 ## Subjects
-A subject is anything within the scene that the camera should keep in fram (players, NPCs, items). Subjects have their own bounding boxes that affect how the cameras bounds are drawn. The job of the camera is to draw the bounds such that all of the subjects are visible.
+A subject is anything within the scene that the camera should keep in frame (players, NPCs, items). Subjects have their own bounding boxes that affect how the cameras bounds are drawn. The job of the camera is to draw the bounds such that all of the subjects are visible.
 
 ## Interest
 The interest is arguably the most important part of the system. It uses the information produced by the subjects and bounds to find the ideal position for the camera to look at. The camera is always looking at the interest, as a result the interest should always be in the center of the screen.
