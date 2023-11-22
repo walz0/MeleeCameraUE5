@@ -12,12 +12,12 @@ This project aims to recreate the look and feel of Melee's camera through the us
 # Stage
 
 ### Fixedness
-Fixedness is a scale factor that controls how much the camera will rotate in response to player movement. In general, the higher the amount of subjects (generally players) in the scene the higher the fixedness value will be set.
+Fixedness is a scale factor that controls how much the camera will rotate in response to the position of the subjects (generally players). In general, the higher the amount of subjects in the scene the higher the fixedness value will be set.
 ```
 float fixedness;
 ```
 ### Camera Limits
-The maximum dimensions of the camera bounding box are set for each side of the screen. These are accompanied by depth limits that control how far the camera is allowed to 'zoom' in and out to.
+The maximum dimensions of the camera bounding box for each side of the screen. These are accompanied by depth limits that control how far the camera is allowed to 'zoom' in and out.
 #### Camera bound limits
 ```
 float cam_limit_top;
@@ -71,25 +71,29 @@ Current position of the subject.
 FVector pos;
 ```
 ### Y Offset
-Vertical offset of the bounding box from the focus point.
+Vertical offset of the bounding box from the focus.
 ```
 float y_offset;
 ```
 
 # MainCamera
 ### Interest
+The point that the camera is currently looking at. The interest is constantly trying to find the most optimal spot to look in order to frame the subjects properly and avoid wasting space on screen.
 ```
 FVector interest;
 ```
 ### Target Interest
+The target point of interest that is calculated from changes in the camera bounds. This is what the interest interpolates toward to create a smooth pan / zoom.
 ```
 FVector target_interest;
 ```
 ### Position
+The current position of the camera in the world.
 ```
 FVector position;
 ```
 ### Target Position
+The target position of the camera.
 ```
 FVector target_position;
 ```
