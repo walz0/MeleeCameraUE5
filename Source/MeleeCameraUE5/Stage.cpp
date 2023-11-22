@@ -74,10 +74,24 @@ float AStage::GetCamDistMax() {
 }
 
 void AStage::Debug_DrawCameraLimits() {
+	float width = cam_limit_right - cam_limit_left;
+	float height = cam_limit_top - cam_limit_bottom;
+
+	UE_LOG(LogTemp, Warning, TEXT("%f"), width);
+	UE_LOG(LogTemp, Warning, TEXT("%f"), height);
+
+	FVector center = FVector(
+		0.0f, 
+		0.0f + width / 2.0f - abs(cam_limit_left),
+		0.0f + height / 2.0f - abs(cam_limit_bottom)
+	);
+
+	UE_LOG(LogTemp, Warning, TEXT("%f, %f, %f"), center.X, center.Y, center.Z);
+
 	DrawDebugBox(
-		GetWorld(), 
-		FVector(0.0f, 0.0f, 0.0f), 
-		FVector(0.0f, cam_limit_right, cam_limit_top), 
+		GetWorld(),
+		center,
+		FVector(0.0f, width / 2.0f, height/ 2.0f),
 		FColor::Blue, 
 		true, 
 		-1, 
