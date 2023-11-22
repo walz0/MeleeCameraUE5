@@ -53,10 +53,8 @@ void AMainCamera::Tick(float DeltaTime)
     // LerpInterest(0.8f);
 
     // Look at point of interest
-    // LookAt(interest);
+    LookAt(interest);
 
-    FRotator rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), interest);
-    SetActorRotation(rot);
 
     position = FMath::Lerp(position, target_position, 0.05f);
     // Set position of camera
@@ -155,14 +153,10 @@ void AMainCamera::FocusSubject(int slot) {
 }
 
 void AMainCamera::LookAt(FVector pos) {
-    // Current actor location
-    FVector currentPos = GetActorLocation();
-    // Position of target to look at
-    FVector targetPos = pos;
-    // Calculate matrix from forward vector and get rotation
-    FRotator targetRot = FRotationMatrix::MakeFromX(targetPos - currentPos).Rotator();
-    // Set the rotation of the current object
-    SetActorRotation(targetRot);
+    // Get look at rotation
+    FRotator rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), pos);
+    // Set rotation
+    SetActorRotation(rot);
 }
 
 void AMainCamera::SetPos(FVector pos) {
