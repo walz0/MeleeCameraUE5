@@ -7,9 +7,24 @@ This project aims to recreate the look and feel of Melee's camera through the us
 
 ![Bounds](/bounds.gif "Bounds")
 
+# Overview
+The camera behavior is driven by three main factors: subjects, bounds, and interest. The primary focus is on properly framing the subjects (typically players) within the scene, without sacrificing gameplay. To achieve this the camera may scale its bounds or rotate in order to keep itself in a more optimal position, avoid clipping any necessary visuals, and prevent sudden movements.
+
+
+## Bounds
+The camera's bounds are completely governed by the position and size of the subjects' bounding boxes. While the purpose of the bounds is to contain the subjects, the bounds may stretch and shrink depending on the direction the subjects are facing, the vertical position of the subjects, and the fixedness value of the stage. For instance, the the bottom bound may expand dramatically when there is a subject toward the upper or lower camera limit, this is to ensure that the stage is still visible for the players below them.
+
+## Subjects
+A subject is anything within the scene that the camera should keep in fram (players, NPCs, items). Subjects have their own bounding boxes that affect how the cameras bounds are drawn. The job of the camera is to draw the bounds such that all of the subjects are visible.
+
+## Interest
+The interest is arguably the most important part of the system. It uses the information produced by the subjects and bounds to find the ideal position for the camera to look at. The camera is always looking at the interest, as a result the interest should always be in the center of the screen.
+
 ---
 
-# Stage
+# Structures
+
+## Stage
 
 ### Fixedness
 Fixedness is a scale factor that controls how much the camera will rotate in response to the position of the subjects (generally players). In general, the higher the amount of subjects in the scene the higher the fixedness value will be set.
@@ -107,7 +122,10 @@ TArray<float> subjectFixednessMultipliers = TArray<float>{
 };
 ```
 ### Camera Bounds
-A bounding box that contains the subjects
+A bounding box that contains the subjects.
 ```
-UCameraBounds* bounds;
+float x_min;
+float y_min;
+float x_max;
+float y_max;
 ```
