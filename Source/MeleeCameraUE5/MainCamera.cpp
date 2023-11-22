@@ -34,35 +34,23 @@ void AMainCamera::Tick(float DeltaTime)
   
     // Update CameraBounds
     UpdateBounds();
-
     // Update target interest / position
     UpdateTarget();
 
-    // Set interest to center of camera bounds
-    /*SetInterest(FVector(
-        0.0f, 
-        ((bounds->x_max - bounds->x_min) / 2.0f) - abs(bounds->x_min),
-        ((bounds->y_max - bounds->y_min) / 2.0f) - abs(bounds->y_min)
-    ));*/
-
-
-	UE_LOG(LogTemp, Warning, TEXT("inter %f, %f, %f"), interest.X, interest.Y, interest.Z);
-	UE_LOG(LogTemp, Warning, TEXT("%f, %f, %f"), target_interest.X, target_interest.Y, target_interest.Z);
-
+    // Lerp interest toward target
     interest = FMath::Lerp(interest, target_interest, 0.05f);
-    // LerpInterest(0.8f);
-
     // Look at point of interest
     LookAt(interest);
 
-
+    // Lerp position toward target
     position = FMath::Lerp(position, target_position, 0.05f);
     // Set position of camera
     SetPos(position);
 
-    // Draw bounds
+    // Draw bounds for debug purposes
     Debug_DrawBounds(DeltaTime);
 
+    // Basic debug movement (this is not how it should be done)
     if (subjects.Num() > 0) {
         float speed = 10.0f;
         FVector prevPos = subjects[0]->GetOwner()->GetActorLocation();
@@ -72,11 +60,8 @@ void AMainCamera::Tick(float DeltaTime)
             prevPos.Z + InputComponent->GetAxisValue(TEXT("Vertical")) * speed
         );
 
-		// UE_LOG(LogTemp, Warning, TEXT("%f, %f, %f"), newPos.X, newPos.Y, newPos.Z);
         subjects[0]->GetOwner()->SetActorLocation(newPos);
     }
-
-	// UE_LOG(LogTemp, Warning, TEXT("x_max %f, x_min %f, y_max %f, y_min %f"), bounds->x_max, bounds->x_min, bounds->y_min, bounds->y_max);
 }
 
 // Called to bind functionality to input
