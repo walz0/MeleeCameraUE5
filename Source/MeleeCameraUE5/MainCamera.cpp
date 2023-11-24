@@ -48,7 +48,13 @@ void AMainCamera::Tick(float DeltaTime)
     SetPos(position);
 
     // Draw bounds for debug purposes
-    Debug_DrawBounds(DeltaTime);
+    Debug_DrawBounds();
+
+    // Draw interest for debug purposes
+    Debug_DrawInterest();
+
+    // Draw target interest for debug purposes
+    Debug_DrawTargetInterest();
 
     // Basic debug movement (this is not how it should be done)
     if (subjects.Num() > 0) {
@@ -59,8 +65,15 @@ void AMainCamera::Tick(float DeltaTime)
             prevPos.Y + InputComponent->GetAxisValue(TEXT("Horizontal")) * speed, 
             prevPos.Z + InputComponent->GetAxisValue(TEXT("Vertical")) * speed
         );
-
         subjects[0]->GetOwner()->SetActorLocation(newPos);
+
+		prevPos = subjects[1]->GetOwner()->GetActorLocation();
+        newPos = FVector(
+            prevPos.X, 
+            prevPos.Y + InputComponent->GetAxisValue(TEXT("Horizontal2")) * speed, 
+            prevPos.Z + InputComponent->GetAxisValue(TEXT("Vertical2")) * speed
+        );
+        subjects[1]->GetOwner()->SetActorLocation(newPos);
     }
 }
 
@@ -156,15 +169,18 @@ void AMainCamera::SetFOV(float degrees) {
     fov = 0.0f;
 }
 
-void AMainCamera::Debug_DrawBounds(float deltaTime) {
+void AMainCamera::Debug_DrawBounds() {
 	float width = bounds->x_max - bounds->x_min;
 	float height = bounds->y_max - bounds->y_min;
 
 	FVector center = FVector(
 		0.0f, 
-		width / 2.0f - abs(bounds->x_min),
-		height / 2.0f - abs(bounds->y_min)
+		width / 2.0f + bounds->x_min,
+		height / 2.0f + bounds->y_min
 	);
+
+	UE_LOG(LogTemp, Warning, TEXT("center: %f, %f, %f"), center.X, center.Y, center.Z);
+	UE_LOG(LogTemp, Warning, TEXT("width: %f, height: %f"), width, height);
 
 	DrawDebugBox(
 		GetWorld(), 
@@ -175,6 +191,32 @@ void AMainCamera::Debug_DrawBounds(float deltaTime) {
 		-1, 
 		0, 
 		10
+	);
+}
+
+void AMainCamera::Debug_DrawInterest() {
+	DrawDebugBox(
+		GetWorld(), 
+        interest,
+		FVector(0.0f, 5.0f, 5.0f), 
+		FColor::Purple, 
+		false, 
+		-1, 
+		0, 
+	    10
+	);
+}
+
+void AMainCamera::Debug_DrawTargetInterest() {
+	DrawDebugBox(
+		GetWorld(), 
+        target_interest,
+		FVector(0.0f, 5.0f, 5.0f), 
+		FColor::Orange, 
+		false, 
+		-1, 
+		0, 
+	    10
 	);
 }
 

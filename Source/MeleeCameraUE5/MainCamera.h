@@ -87,7 +87,11 @@ protected:
 	// Initializes camera reference
 	void InitCamera();
 	// Draws the camera bounds with a debug rectangle
-	void Debug_DrawBounds(float deltaTime);
+	void Debug_DrawBounds();
+	// Draws the camera interest with a debug circle
+	void Debug_DrawInterest();
+	// Draws the camera target interest with a debug circle
+	void Debug_DrawTargetInterest();
 
 public:	
 	// Called every frame
